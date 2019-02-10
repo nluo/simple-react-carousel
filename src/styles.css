@@ -1,0 +1,78 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.right-control {
+  top: 120px;
+  position: absolute;
+  z-index: 1;
+  margin-top: auto;
+  margin-bottom: auto;
+  outline: none;
+}
+
+.left-control {
+  top: 60px;
+  position: absolute;
+  z-index: 1;
+  outline: none;
+}
+.arrow-box {
+  border: 1px solid #dfe1e5;
+  border-radius: 50%;
+  background-color: #fff;
+  color: #757575;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  height: 36px;
+  width: 36px;
+  position: relative;
+}
+.arrow {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.slideshow {
+  height: 200px;
+  width: 600px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  transform: translate3d(0, 0, 0);
+}
+
+.slideshow > div {
+  width: 2000px;
+  background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/collage.jpg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transform: translate3d(0, 0, 0);
+}
+
+.slideshow .mover-1 {
+  animation: moveSlideshow 12s linear infinite;
+}
+.slideshow .mover-2 {
+  opacity: 0;
+  transition: opacity 2s ease-out;
+  background-position: 0 -200px;
+  animation: moveSlideshow 15s linear infinite;
+}
+
+.slideshow:hover .mover-2 {
+  opacity: 1;
+}
