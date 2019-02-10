@@ -10,6 +10,7 @@ class Slider extends React.Component {
       x: 0
     };
   }
+
   handleLeftClick = () => {
     const { x: currentX } = this.state;
 
@@ -32,6 +33,7 @@ class Slider extends React.Component {
       x: currentX - 100
     });
   };
+
   render() {
     console.log(this.state.x);
     return (
