@@ -26,7 +26,7 @@ class Slider extends React.Component {
   handleRightClick = () => {
     const { x: currentX } = this.state;
 
-    if (Math.abs(currentX) > 1500) {
+    if (Math.abs(currentX) > 1200) {
       return;
     }
     this.setState({
@@ -35,11 +35,12 @@ class Slider extends React.Component {
   };
 
   render() {
-    console.log(this.state.x);
     return (
       <div className="container">
         <div className="left-control">
-          <LeftArrow handleClick={this.handleLeftClick} />
+          <ArrowButton handleClick={this.handleLeftClick}>
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+          </ArrowButton>
         </div>
         <div className="slideshow">
           <div
@@ -51,17 +52,16 @@ class Slider extends React.Component {
           />
         </div>
         <div className="right-control">
-          <RightArrow handleClick={this.handleRightClick} />
+          <ArrowButton handleClick={this.handleRightClick}>
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+          </ArrowButton>
         </div>
       </div>
     );
   }
 }
 
-function LeftArrow(props) {
-  const handleLeftClick = () => {
-    props.handleClick();
-  };
+function ArrowButton(props) {
   return (
     <div className="arrow-box" onClick={props.handleClick}>
       <span className="arrow">
@@ -70,23 +70,7 @@ function LeftArrow(props) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
         >
-          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-        </svg>
-      </span>
-    </div>
-  );
-}
-
-function RightArrow(props) {
-  return (
-    <div className="arrow-box" onClick={props.handleClick}>
-      <span className="arrow">
-        <svg
-          focusable="false"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+          {props.children}
         </svg>
       </span>
     </div>
