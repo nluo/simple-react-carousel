@@ -6,22 +6,26 @@
 .container {
   max-width: 640px;
   margin: 0 auto;
-}
-
-.right-control {
-  top: 120px;
-  position: absolute;
-  z-index: 1;
-  margin-top: auto;
-  margin-bottom: auto;
-  outline: none;
+  display: flex;
 }
 
 .left-control {
-  top: 60px;
-  position: absolute;
+  z-index: 5;
+  outline: none;
+  margin: auto -20px auto 0;
+}
+
+.right-control {
   z-index: 1;
   outline: none;
+  margin: auto 0px auto -20px;
+}
+svg path {
+  fill: #757575;
+}
+
+svg:hover path {
+  fill: #222;
 }
 .arrow-box {
   border: 1px solid #dfe1e5;
@@ -66,6 +70,7 @@
 
 .slideshow .mover-1 {
   animation: moveSlideshow 12s linear infinite;
+  background-position: 0 -200px;
 }
 .slideshow .mover-2 {
   opacity: 0;
