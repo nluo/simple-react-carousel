@@ -19,7 +19,7 @@ class Slider extends React.Component {
     }
 
     this.setState({
-      x: currentX + 100
+      x: currentX + 200
     });
   };
 
@@ -30,18 +30,38 @@ class Slider extends React.Component {
       return;
     }
     this.setState({
-      x: currentX - 100
+      x: currentX - 200
     });
   };
+
+  get leftControl() {
+    const { x } = this.state;
+    if (x === 0) {
+      return null;
+    }
+    return (
+      <div className="left-control">
+        <ArrowButton handleClick={this.handleLeftClick}>
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        </ArrowButton>
+      </div>
+    );
+  }
+
+  get rightControl() {
+    return (
+      <div className="right-control">
+        <ArrowButton handleClick={this.handleRightClick}>
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+        </ArrowButton>
+      </div>
+    );
+  }
 
   render() {
     return (
       <div className="container">
-        <div className="left-control">
-          <ArrowButton handleClick={this.handleLeftClick}>
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-          </ArrowButton>
-        </div>
+        {this.leftControl}
         <div className="slideshow">
           <div
             className="mover-1"
@@ -51,11 +71,7 @@ class Slider extends React.Component {
             }}
           />
         </div>
-        <div className="right-control">
-          <ArrowButton handleClick={this.handleRightClick}>
-            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-          </ArrowButton>
-        </div>
+        {this.rightControl}
       </div>
     );
   }
