@@ -6,9 +6,22 @@ import "./styles.css";
 class Slider extends React.Component {
   constructor(props) {
     super(props);
+
+    this.innerRef = React.createRef();
+    this.slideshowRef = React.createRef();
+    this.steps = 100;
     this.state = {
       x: 0
     };
+  }
+
+  componentDidMount() {
+    // const innerContainerWidth = this.innerRef.current.clientWidth;
+    // const slideBoxWidth = this.slideshowRef.current.clientWidth;
+    this.steps = 200;
+
+    this.maxSlideRight =
+      this.innerRef.current.clientWidth - this.slideshowRef.current.clientWidth;
   }
 
   handleLeftClick = () => {
@@ -19,18 +32,20 @@ class Slider extends React.Component {
     }
 
     this.setState({
-      x: currentX + 200
+      x: currentX + this.steps
     });
   };
 
   handleRightClick = () => {
     const { x: currentX } = this.state;
 
-    if (Math.abs(currentX) > 1200) {
+    const destination = Math.abs(currentX - this.steps);
+
+    if (destination > this.maxSlideRight) {
       return;
     }
     this.setState({
-      x: currentX - 200
+      x: currentX - this.steps
     });
   };
 
@@ -49,6 +64,10 @@ class Slider extends React.Component {
   }
 
   get rightControl() {
+    const { x } = this.state;
+    if (Math.abs(x) >= this.maxSlideRight) {
+      return null;
+    }
     return (
       <div className="right-control">
         <ArrowButton handleClick={this.handleRightClick}>
@@ -58,18 +77,28 @@ class Slider extends React.Component {
     );
   }
 
+  get moverBox() {
+    const { children } = this.props;
+    return (
+      <div
+        ref={this.innerRef}
+        className="mover-1"
+        style={{
+          transform: `translateX(${this.state.x}px)`,
+          transition: "0.5s"
+        }}
+      >
+        {children}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="container">
         {this.leftControl}
-        <div className="slideshow">
-          <div
-            className="mover-1"
-            style={{
-              transform: `translateX(${this.state.x}px)`,
-              transition: "0.5s"
-            }}
-          />
+        <div className="slideshow" ref={this.slideshowRef}>
+          {this.moverBox}
         </div>
         {this.rightControl}
       </div>
@@ -94,11 +123,68 @@ function ArrowButton(props) {
 }
 
 function App() {
+  const MoverBox = props => (
+    <div
+      style={{
+        background: `url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/collage.jpg)`,
+        width: "100%",
+        height: "100%",
+        backgroundPosition: "0 -200px"
+      }}
+    />
+  );
+
+  const DivBox = props => {
+    return (
+      <div
+        key={props.key}
+        style={{
+          background: props.color,
+          width: "200px",
+          height: "90%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "white"
+        }}
+      >
+        <h1> DIV {props.number + 1} </h1>
+      </div>
+    );
+  };
+
+  const generateBoxes = () => {
+    const boxes = [];
+    for (let i = 0; i < 10; i++) {
+      boxes.push(<DivBox key={i} number={i} color={getRandomColor()} />);
+    }
+    return boxes;
+  };
+
   return (
     <div className="App">
-      <Slider />
+      <>
+        <h3> Slider 1 </h3>
+        <Slider>
+          <MoverBox />
+        </Slider>
+      </>
+
+      <>
+        <h3> Slider 2 </h3>
+        <Slider>{generateBoxes()}</Slider>
+      </>
     </div>
   );
+}
+
+function getRandomColor() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
 
 const rootElement = document.getElementById("root");
