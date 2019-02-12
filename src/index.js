@@ -11,7 +11,9 @@ class Slider extends React.Component {
     this.slideshowRef = React.createRef();
     this.steps = 100;
     this.state = {
-      x: 0
+      x: 0,
+      originalX: 0,
+      afterDragX: 0
     };
   }
 
@@ -22,6 +24,11 @@ class Slider extends React.Component {
 
     this.maxSlideRight =
       this.innerRef.current.clientWidth - this.slideshowRef.current.clientWidth;
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("mousemove", this.handleMouseMove);
+    window.removeEventListener("mouseup", this.handleMouseUp);
   }
 
   handleLeftClick = () => {
@@ -93,11 +100,57 @@ class Slider extends React.Component {
     );
   }
 
+  handleMouseUp = ({ clientX, clientY }) => {
+    const { x: currentX } = this.state;
+
+    const distance = this.state.originalX - clientX;
+    console.log("distance is ", distance);
+    console.log("current x is ", currentX);
+    if (distance === 0) {
+      return;
+    }
+
+    let resultedDistance = -distance + currentX;
+
+    if (Math.abs(resultedDistance) > this.maxSlideRight) {
+      resultedDistance = -this.maxSlideRight;
+    }
+
+    if (resultedDistance > 0) {
+      resultedDistance = 0;
+    }
+
+    this.setState(
+      {
+        x: resultedDistance
+      },
+      () => {
+        console.log("after handle mouse up, current x is ", this.state.x);
+      }
+    );
+  };
+  handleMouseDown = event => {
+    const { clientX } = event;
+    this.setState({
+      originalX: clientX
+    });
+  };
+
+  handleDragStart = () => {
+    console.log("on drag start");
+  };
+
   render() {
     return (
-      <div className="container">
+      <div className="container" onClick={this.onScroll}>
         {this.leftControl}
-        <div className="slideshow" ref={this.slideshowRef}>
+        <div
+          className="slideshow"
+          ref={this.slideshowRef}
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onDrag={this.handleDragStart}
+        >
           {this.moverBox}
         </div>
         {this.rightControl}
