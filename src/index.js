@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import "./styles.css";
+import "./styles.scss";
 
 class Slider extends React.Component {
   constructor(props) {
@@ -13,7 +13,8 @@ class Slider extends React.Component {
     this.state = {
       x: 0,
       originalX: 0,
-      afterDragX: 0
+      originalMovedX: 0,
+      distanceMoved: 0
     };
   }
 
@@ -92,7 +93,7 @@ class Slider extends React.Component {
         className="mover-1"
         style={{
           transform: `translateX(${this.state.x}px)`,
-          transition: "0.5s"
+          transition: "0.1s"
         }}
       >
         {children}
@@ -131,10 +132,60 @@ class Slider extends React.Component {
       }
     );
   };
+
+  handleMove = event => {
+    const { clientX } = this.unify(event);
+
+    const { 
+      originalMovedX, 
+      x: currentX,
+      distanceMoved 
+    } = this.state;
+
+    const distance = originalMovedX - clientX;
+
+    const realDistanceMoved = distance - distanceMoved ;
+
+    if (realDistanceMoved === 0) {
+      return;
+    }
+
+    let resultedDistance = -realDistanceMoved + currentX;
+
+    console.log('real distance travel is ', realDistanceMoved);
+
+    console.log('resulted distance is ', resultedDistance);
+
+    if (Math.abs(resultedDistance) > this.maxSlideRight) {
+      resultedDistance = -this.maxSlideRight;
+    }
+
+    if (resultedDistance > 0) {
+      resultedDistance = 0;
+    }
+
+    this.setState(
+      {
+        x: resultedDistance,
+        distanceMoved: distance
+      },
+      () => {
+        console.log("after handleMove, current x is ", this.state.x);
+      }
+    );
+  }
+
+  handleTouchEnd = () => {
+    this.setState({
+      distanceMoved: 0
+    })
+  }
+
   handleMouseDown = event => {
     const { clientX } = this.unify(event);
     this.setState({
-      originalX: clientX
+      originalX: clientX,
+      originalMovedX: clientX
     });
   };
 
@@ -148,8 +199,9 @@ class Slider extends React.Component {
           ref={this.slideshowRef}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
+          onTouchEnd={this.handleTouchEnd}
           onTouchStart={this.handleMouseDown}
-          onTouchEnd={this.handleMouseUp}
+          onTouchMove={this.handleMove}
           onDrag={this.handleDragStart}
         >
           {this.moverBox}
@@ -178,7 +230,7 @@ function ArrowButton(props) {
 
 const Card = props => (
   <div className="card">
-    <div className="header" />
+    <div className="header" style={{background: props.headerColor}}> {props.title }</div>
     <div className="content">
       <div style={{ width: "50%" }} className="line" />
       <div style={{ width: "20%" }} className="line" />
@@ -189,6 +241,7 @@ const Card = props => (
     </div>
   </div>
 );
+
 
 function App() {
   const MoverBox = props => (
@@ -201,32 +254,13 @@ function App() {
       }}
     />
   );
-
-  const DivBox = props => {
-    return (
-      <div
-        key={props.key}
-        style={{
-          background: props.color,
-          width: "200px",
-          height: "90%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "white"
-        }}
-      >
-        <h1> DIV {props.number + 1} </h1>
-      </div>
-    );
-  };
-
-  const generateBoxes = () => {
-    const boxes = [];
+  
+  const generateCards = () => {
+    const cards = [];
     for (let i = 0; i < 10; i++) {
-      boxes.push(<DivBox key={i} number={i} color={getRandomColor()} />);
+      cards.push(<Card key={i} title={`CARD ${i+1}`} headerColor={i%2 === 0 ? getRandomColor(): '#FF7077'}/>);
     }
-    return boxes;
+    return cards;
   };
 
   return (
@@ -240,7 +274,7 @@ function App() {
 
       <>
         <h3> Slider 2 </h3>
-        <Slider>{generateBoxes()}</Slider>
+        <Slider>{generateCards()}</Slider>
       </>
     </div>
   );

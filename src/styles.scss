@@ -1,3 +1,6 @@
+$scale: 0.7;
+
+
 .App {
   font-family: sans-serif;
   text-align: center;
@@ -67,7 +70,6 @@ svg:hover path {
   height: 100%;
   transform: translate3d(0, 0, 0);
   cursor: pointer;
-  pointer-events: none;
 }
 
 .slideshow .mover-1 {
@@ -83,4 +85,38 @@ svg:hover path {
 
 .slideshow:hover .mover-2 {
   opacity: 1;
+}
+
+.card{
+	height: 90%;
+	width: 200px;
+	background: #fff;
+	
+	border-radius: 0.2rem;
+	box-shadow: 2px 2px 8px rgba(black, 0.2);
+  padding: 0 15px 0 15px;
+
+	
+	.header{
+		height: 25%;
+		width: 100%;
+		
+		background: #FF7077;
+		border-top-left-radius: 0.2rem;
+		border-top-right-radius: 0.2rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	}
+	
+	.content{
+		margin: 10px;
+		
+		.line{
+			background: rgba(grey, 0.2);
+			height: 6px;
+			margin-top: 5px;
+		}
+	}
 }
