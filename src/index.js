@@ -146,15 +146,7 @@ class Slider extends React.Component {
 
     const realDistanceMoved = distance - distanceMoved ;
 
-    if (realDistanceMoved === 0) {
-      return;
-    }
-
     let resultedDistance = -realDistanceMoved + currentX;
-
-    console.log('real distance travel is ', realDistanceMoved);
-
-    console.log('resulted distance is ', resultedDistance);
 
     if (Math.abs(resultedDistance) > this.maxSlideRight) {
       resultedDistance = -this.maxSlideRight;
