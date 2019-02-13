@@ -67,6 +67,7 @@ svg:hover path {
   height: 100%;
   transform: translate3d(0, 0, 0);
   cursor: pointer;
+  pointer-events: none;
 }
 
 .slideshow .mover-1 {

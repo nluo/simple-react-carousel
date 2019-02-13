@@ -100,7 +100,10 @@ class Slider extends React.Component {
     );
   }
 
-  handleMouseUp = ({ clientX, clientY }) => {
+  unify = e =>  e.changedTouches ? e.changedTouches[0] : e;
+
+  handleMouseUp = (event) => {
+    const { clientX } = this.unify(event);
     const { x: currentX } = this.state;
 
     const distance = this.state.originalX - clientX;
@@ -129,15 +132,12 @@ class Slider extends React.Component {
     );
   };
   handleMouseDown = event => {
-    const { clientX } = event;
+    const { clientX } = this.unify(event);
     this.setState({
       originalX: clientX
     });
   };
 
-  handleDragStart = () => {
-    console.log("on drag start");
-  };
 
   render() {
     return (
@@ -148,6 +148,8 @@ class Slider extends React.Component {
           ref={this.slideshowRef}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
+          onTouchStart={this.handleMouseDown}
+          onTouchEnd={this.handleMouseUp}
           onDrag={this.handleDragStart}
         >
           {this.moverBox}
