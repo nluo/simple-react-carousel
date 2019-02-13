@@ -35,7 +35,14 @@ class Slider extends React.Component {
   handleLeftClick = () => {
     const { x: currentX } = this.state;
 
-    if (currentX === 0) {
+    const destination = currentX + this.steps;
+
+    if (destination > 0) {
+      if (currentX !== 0) {
+        return this.setState({
+          x: 0
+        });
+      }
       return;
     }
 
@@ -50,6 +57,11 @@ class Slider extends React.Component {
     const destination = Math.abs(currentX - this.steps);
 
     if (destination > this.maxSlideRight) {
+      if (this.maxSlideRight - Math.abs(currentX) > 0) {
+        return this.setState({
+          x: -this.maxSlideRight
+        })
+      }
       return;
     }
     this.setState({
