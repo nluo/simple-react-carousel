@@ -104,8 +104,7 @@ class Slider extends React.Component {
     const { x: currentX } = this.state;
 
     const distance = this.state.originalX - clientX;
-    console.log("distance is ", distance);
-    console.log("current x is ", currentX);
+
     if (distance === 0) {
       return;
     }
@@ -174,6 +173,20 @@ function ArrowButton(props) {
     </div>
   );
 }
+
+const Card = props => (
+  <div className="card">
+    <div className="header" />
+    <div className="content">
+      <div style={{ width: "50%" }} className="line" />
+      <div style={{ width: "20%" }} className="line" />
+      <div className="line" />
+      <div style={{ width: "80%" }} className="line" />
+      <div style={{ width: "60%" }} className="line" />
+      <div style={{ width: "90%" }} className="line" />
+    </div>
+  </div>
+);
 
 function App() {
   const MoverBox = props => (
